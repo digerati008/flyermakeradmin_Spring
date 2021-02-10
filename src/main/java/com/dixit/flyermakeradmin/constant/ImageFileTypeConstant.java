@@ -1,5 +1,6 @@
 package com.dixit.flyermakeradmin.constant;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class ImageFileTypeConstant {
@@ -8,7 +9,14 @@ public class ImageFileTypeConstant {
     public static final String PNG = "image/png";
     public static final String SVG = "image/svg+xml";
 
-    public static final Set<String> IMAGE_FILE_TYPES = Set.of(JPEG, JPG, PNG, SVG);
+    public static Set<String> getImageFileTypes() {
+        Set<String> set = new HashSet<>();
+        set.add(JPEG);
+        set.add(JPG);
+        set.add(PNG);
+        set.add(SVG);
+        return set;
+    }
 
     private ImageFileTypeConstant() {
         throw new IllegalStateException("Utility class");
