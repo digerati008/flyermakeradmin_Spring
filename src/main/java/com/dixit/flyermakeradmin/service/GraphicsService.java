@@ -1,8 +1,9 @@
 package com.dixit.flyermakeradmin.service;
 
-import com.dixit.flyermakeradmin.entity.Graphics;
-import com.dixit.flyermakeradmin.entity.GraphicsTagMapping;
+import com.dixit.flyermakeradmin.entity.*;
 import com.dixit.flyermakeradmin.repository.GraphicsRepository;
+import com.dixit.flyermakeradmin.response.CommonResponse;
+import com.dixit.flyermakeradmin.response.TagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,12 @@ public class GraphicsService {
 
     @Autowired
     GraphicsTagMappingService graphicsTagMappingService;
+
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    CategoryService categoryService;
 
     public Graphics insertNewRecord(MultipartFile image, Integer catId, String isPurchase) throws IOException {
         String fileDownloadUri = fileService.storeFile(image);
@@ -67,14 +74,31 @@ public class GraphicsService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(graphicsList)) {
             for (Graphics g: graphicsList) {
+                Optional<Category> c = categoryService.findByCatId(g.getCatId());
+                CommonResponse cr = new CommonResponse(g.getGraphicsId(), g.getIsPurchase(), g.getImgPath(), g.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
-                map.put("graphics", g);
+                map.put("textart", cr);
                 List<GraphicsTagMapping> tagList = graphicsTagMappingService.getAllByGraphicsId(g.getGraphicsId());
-                map.put("tags", tagList);
+                List<TagResponse> transformedTagList = getTransformedTagList(tagList);
+                map.put("tags", transformedTagList);
                 mapList.add(map);
             }
             return mapList;
         } else
             return new ArrayList<>();
+    }
+
+    private List<TagResponse> getTransformedTagList(List<GraphicsTagMapping> tagList) {
+        if (CollectionUtils.isEmpty(tagList))
+            return new ArrayList<>();
+        else {
+            List<TagResponse> transformedTagList = new ArrayList<>();
+            for(GraphicsTagMapping t: tagList) {
+                Tag tag = tagService.getTagById(t.getId().getTagId());
+                TagResponse tagResponse = new TagResponse(t.getId().getTagId(), tag.getTagName());
+                transformedTagList.add(tagResponse);
+            }
+            return transformedTagList;
+        }
     }
 }

@@ -49,7 +49,7 @@ public class FileService {
             Resource resource = new UrlResource(fileStorageLocation.toUri());
             if (resource.exists()) {
                 return resource;
-            } elsep {
+            } else {
                 throw new MyFileNotFoundException("File not found " + fileName);
             }
         } catch (MalformedURLException ex) {
