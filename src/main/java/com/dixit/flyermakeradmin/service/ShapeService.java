@@ -1,8 +1,9 @@
 package com.dixit.flyermakeradmin.service;
 
-import com.dixit.flyermakeradmin.entity.Shape;
-import com.dixit.flyermakeradmin.entity.ShapeTagMapping;
+import com.dixit.flyermakeradmin.entity.*;
 import com.dixit.flyermakeradmin.repository.ShapeRepository;
+import com.dixit.flyermakeradmin.response.CommonResponse;
+import com.dixit.flyermakeradmin.response.TagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,12 @@ public class ShapeService {
 
     @Autowired
     ShapeTagMappingService shapeTagMappingService;
+
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    CategoryService categoryService;
 
     public Shape insertNewRecord(MultipartFile image, Integer catId, String isPurchase) throws IOException {
         String fileDownloadUri = fileService.storeFile(image);
@@ -67,14 +74,31 @@ public class ShapeService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(shapeList)) {
             for (Shape s: shapeList) {
+                Optional<Category> c = categoryService.findByCatId(s.getCatId());
+                CommonResponse cr = new CommonResponse(s.getShapeId(), s.getIsPurchase(), s.getImgPath(), s.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
-                map.put("shape", s);
+                map.put("shape", cr);
                 List<ShapeTagMapping> tagList = shapeTagMappingService.getAllByShapeId(s.getShapeId());
-                map.put("tags", tagList);
+                List<TagResponse> transformedTagList = getTransformedTagList(tagList);
+                map.put("tags", transformedTagList);
                 mapList.add(map);
             }
             return mapList;
         } else
             return new ArrayList<>();
+    }
+
+    private List<TagResponse> getTransformedTagList(List<ShapeTagMapping> tagList) {
+        if (CollectionUtils.isEmpty(tagList))
+            return new ArrayList<>();
+        else {
+            List<TagResponse> transformedTagList = new ArrayList<>();
+            for(ShapeTagMapping t: tagList) {
+                Tag tag = tagService.getTagById(t.getId().getTagId());
+                TagResponse tagResponse = new TagResponse(t.getId().getTagId(), tag.getTagName());
+                transformedTagList.add(tagResponse);
+            }
+            return transformedTagList;
+        }
     }
 }

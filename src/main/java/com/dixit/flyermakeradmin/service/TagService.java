@@ -49,4 +49,8 @@ public class TagService {
     public Optional<Tag> findByTagId(Integer tagId) {
         return tagRepository.findById(tagId);
     }
+
+    public Tag getTagById(Integer tagId) {
+        return tagRepository.findByTagId(tagId);
+    }
 }

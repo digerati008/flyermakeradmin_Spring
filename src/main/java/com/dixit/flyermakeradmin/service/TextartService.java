@@ -1,8 +1,9 @@
 package com.dixit.flyermakeradmin.service;
 
-import com.dixit.flyermakeradmin.entity.Textart;
-import com.dixit.flyermakeradmin.entity.TextartTagMapping;
+import com.dixit.flyermakeradmin.entity.*;
 import com.dixit.flyermakeradmin.repository.TextartRepository;
+import com.dixit.flyermakeradmin.response.CommonResponse;
+import com.dixit.flyermakeradmin.response.TagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +23,12 @@ public class TextartService {
 
     @Autowired
     TextartTagMappingService textartTagMappingService;
+
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    CategoryService categoryService;
 
     public Textart insertNewRecord(MultipartFile image, Integer catId, String isPurchase) throws IOException {
         String fileDownloadUri = fileService.storeFile(image);
@@ -67,14 +74,31 @@ public class TextartService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(textartList)) {
             for (Textart t: textartList) {
+                Optional<Category> c = categoryService.findByCatId(t.getCatId());
+                CommonResponse cr = new CommonResponse(t.getTextartId(), t.getIsPurchase(), t.getImgPath(), t.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
-                map.put("textart", t);
+                map.put("textart", cr);
                 List<TextartTagMapping> tagList = textartTagMappingService.getAllByTextartId(t.getTextartId());
-                map.put("tags", tagList);
+                List<TagResponse> transformedTagList = getTransformedTagList(tagList);
+                map.put("tags", transformedTagList);
                 mapList.add(map);
             }
             return mapList;
         } else
             return new ArrayList<>();
+    }
+
+    private List<TagResponse> getTransformedTagList(List<TextartTagMapping> tagList) {
+        if (CollectionUtils.isEmpty(tagList))
+            return new ArrayList<>();
+        else {
+            List<TagResponse> transformedTagList = new ArrayList<>();
+            for(TextartTagMapping t: tagList) {
+                Tag tag = tagService.getTagById(t.getId().getTagId());
+                TagResponse tagResponse = new TagResponse(t.getId().getTagId(), tag.getTagName());
+                transformedTagList.add(tagResponse);
+            }
+            return transformedTagList;
+        }
     }
 }
