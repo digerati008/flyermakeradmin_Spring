@@ -17,27 +17,27 @@ public class ValidateInputParam {
     }
 
     private Boolean checkImgFileType(String type) {
-        return ImageFileTypeConstant.IMAGE_FILE_TYPES.contains(type);
+        return ImageFileTypeConstant.getImageFileTypes().contains(type);
     }
 
     private Boolean checkFontFileType(String type) {
-        return FontFileTypeConstant.FONT_FILE_TYPES.contains(type);
+        return FontFileTypeConstant.getFontFileTypes().contains(type);
     }
 
     private Boolean checkCatTypeString(String in) {
-        return CategoryTypeConstant.CAT_TYPES.contains(in);
+        return CategoryTypeConstant.getCatTypes().contains(in);
     }
 
     private Boolean checkTagTypeString(String in) {
-        return TagTypeConstant.TAG_TYPES.contains(in);
+        return TagTypeConstant.getTagTypes().contains(in);
     }
 
     private Boolean checkStatusTypeString(String in) {
-        return StatusTypeConstant.STATUS_TYPES.contains(in);
+        return StatusTypeConstant.getStatusTypes().contains(in);
     }
 
     private Boolean checkIsPurchaseTypeString(String in) {
-        return IsPurchaseTypeConstant.IS_PURCHASE_TYPES.contains(in);
+        return IsPurchaseTypeConstant.getIsPurchaseTypes().contains(in);
     }
 
 
