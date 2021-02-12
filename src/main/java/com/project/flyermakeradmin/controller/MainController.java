@@ -2,11 +2,11 @@ package com.project.flyermakeradmin.controller;
 
 import com.project.flyermakeradmin.constant.CategoryTypeConstant;
 import com.project.flyermakeradmin.constant.TagTypeConstant;
-import com.dixit.flyermakeradmin.entity.*;
+import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.exception.DataNotInDatabaseException;
 import com.project.flyermakeradmin.response.PosterIdThumbPurchase;
-import com.dixit.flyermakeradmin.service.*;
+import com.project.flyermakeradmin.service.*;
 import com.google.gson.Gson;
 import com.project.flyermakeradmin.service.*;
 import org.slf4j.Logger;
