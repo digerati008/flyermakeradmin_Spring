@@ -1,6 +1,6 @@
 package com.project.flyermakeradmin.helper;
 
-import com.dixit.flyermakeradmin.constant.*;
+import com.project.flyermakeradmin.constant.*;
 import com.project.flyermakeradmin.constant.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

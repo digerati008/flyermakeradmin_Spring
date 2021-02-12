@@ -1,6 +1,6 @@
 package com.project.flyermakeradmin.service;
 
-import com.dixit.flyermakeradmin.entity.*;
+import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.Shape;
 import com.project.flyermakeradmin.entity.ShapeTagMapping;
 import com.project.flyermakeradmin.entity.Tag;
