@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/shape")
 public class ShapeController {
