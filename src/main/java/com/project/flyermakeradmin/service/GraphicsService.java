@@ -1,11 +1,10 @@
 package com.project.flyermakeradmin.service;
 
-import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.Graphics;
 import com.project.flyermakeradmin.entity.GraphicsTagMapping;
 import com.project.flyermakeradmin.entity.Tag;
 import com.project.flyermakeradmin.repository.GraphicsRepository;
-import com.project.flyermakeradmin.response.CommonResponse;
+import com.project.flyermakeradmin.response.GraphicsResponse;
 import com.project.flyermakeradmin.response.TagResponse;
 import com.project.flyermakeradmin.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +78,7 @@ public class GraphicsService {
         if(!CollectionUtils.isEmpty(graphicsList)) {
             for (Graphics g: graphicsList) {
                 Optional<Category> c = categoryService.findByCatId(g.getCatId());
-                CommonResponse cr = new CommonResponse(g.getGraphicsId(), g.getIsPurchase(), g.getImgPath(), g.getCatId(), c.get().getCatName());
+                GraphicsResponse cr = new GraphicsResponse(g.getGraphicsId(), g.getIsPurchase(), g.getImgPath(), g.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
                 map.put("textart", cr);
                 List<GraphicsTagMapping> tagList = graphicsTagMappingService.getAllByGraphicsId(g.getGraphicsId());

@@ -1,13 +1,12 @@
 package com.project.flyermakeradmin.service;
 
-import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.Category;
 import com.project.flyermakeradmin.entity.Tag;
 import com.project.flyermakeradmin.entity.Textart;
 import com.project.flyermakeradmin.entity.TextartTagMapping;
 import com.project.flyermakeradmin.repository.TextartRepository;
-import com.project.flyermakeradmin.response.CommonResponse;
 import com.project.flyermakeradmin.response.TagResponse;
+import com.project.flyermakeradmin.response.TextartResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -79,7 +78,7 @@ public class TextartService {
         if(!CollectionUtils.isEmpty(textartList)) {
             for (Textart t: textartList) {
                 Optional<Category> c = categoryService.findByCatId(t.getCatId());
-                CommonResponse cr = new CommonResponse(t.getTextartId(), t.getIsPurchase(), t.getImgPath(), t.getCatId(), c.get().getCatName());
+                TextartResponse cr = new TextartResponse(t.getTextartId(), t.getIsPurchase(), t.getImgPath(), t.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
                 map.put("textart", cr);
                 List<TextartTagMapping> tagList = textartTagMappingService.getAllByTextartId(t.getTextartId());

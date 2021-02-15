@@ -5,8 +5,8 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class CommonResponse {
-    private Integer id;
+public class BackgroundResponse {
+    private Integer bgId;
     private String isPurchase;
     private String imgPath;
     private Integer catId;
