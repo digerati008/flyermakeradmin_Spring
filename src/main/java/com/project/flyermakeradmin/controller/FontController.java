@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/font")
 public class FontController {

@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/textart")
 public class TextartController {
