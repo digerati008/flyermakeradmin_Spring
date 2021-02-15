@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/poster")
 public class PosterController {
