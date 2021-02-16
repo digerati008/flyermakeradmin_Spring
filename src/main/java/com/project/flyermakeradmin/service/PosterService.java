@@ -5,7 +5,6 @@ import com.project.flyermakeradmin.entity.BackgroundTagMapping;
 import com.project.flyermakeradmin.entity.Category;
 import com.project.flyermakeradmin.entity.Poster;
 import com.project.flyermakeradmin.repository.PosterRepository;
-import com.project.flyermakeradmin.response.CommonResponse;
 import com.project.flyermakeradmin.response.PosterIdThumbPurchase;
 import com.project.flyermakeradmin.response.PosterResponse;
 import com.project.flyermakeradmin.response.TagResponse;
