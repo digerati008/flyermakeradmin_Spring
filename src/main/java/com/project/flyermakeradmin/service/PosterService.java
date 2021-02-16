@@ -1,8 +1,14 @@
 package com.project.flyermakeradmin.service;
 
+import com.project.flyermakeradmin.entity.Background;
+import com.project.flyermakeradmin.entity.BackgroundTagMapping;
+import com.project.flyermakeradmin.entity.Category;
 import com.project.flyermakeradmin.entity.Poster;
 import com.project.flyermakeradmin.repository.PosterRepository;
+import com.project.flyermakeradmin.response.CommonResponse;
 import com.project.flyermakeradmin.response.PosterIdThumbPurchase;
+import com.project.flyermakeradmin.response.PosterResponse;
+import com.project.flyermakeradmin.response.TagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +31,9 @@ public class PosterService {
 
     @Autowired
     PosterTagMappingService posterTagMappingService;
+
+    @Autowired
+    CategoryService categoryService;
 
     public Poster insertNewRecord(MultipartFile thumbImage, MultipartFile bgImage, String isPurchase, Integer height, Integer width, String status, Integer catId) throws IOException {
         String fileDownloadUriThumb = fileService.storeFile(thumbImage);
@@ -49,6 +58,21 @@ public class PosterService {
         poster.setCatId(catId);
 
         return posterRepository.save(poster);
+    }
+
+    public List<PosterResponse> getAllPosterDetails() {
+        List<Poster> posterList = posterRepository.findAll();
+        List<PosterResponse> resList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(posterList)) {
+            for (Poster b: posterList) {
+                Optional<Category> c = categoryService.findByCatId(b.getCatId());
+                PosterResponse cr = new PosterResponse(b.getPosterId(),b.getThumbImgPath(), b.getIsPurchase(), b.getBgImgPath(),b.getHeight(),b.getWidth(),b.getStatus(),b.getCatId(), c.get().getCatName());
+                resList.add(cr);
+            }
+
+            return resList;
+        } else
+            return new ArrayList<>();
     }
 
     public boolean checkIfPosterIdPresent(Integer posterId) {
@@ -90,8 +114,6 @@ public class PosterService {
     public Integer getTotalSizeByCatId(Integer catId) {
         return posterRepository.getTotalSizeByCatId(catId);
     }
-
-
 
     public void deleteByPosterId(Integer posterId) {
         posterRepository.deleteById(posterId);

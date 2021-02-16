@@ -6,6 +6,7 @@ import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.exception.DataNotInDatabaseException;
 import com.project.flyermakeradmin.response.PosterIdThumbPurchase;
+import com.project.flyermakeradmin.response.PosterResponse;
 import com.project.flyermakeradmin.service.*;
 import com.google.gson.Gson;
 import com.project.flyermakeradmin.service.*;
@@ -244,6 +245,21 @@ public class MainController {
             return new ResponseEntity<>(gson.toJson(backgroundList), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Error in getAllBackgroundDetails");
+            return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(value = "/allPosterDetails", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getAllPosterDetails() {
+        try {
+            List<PosterResponse> posterList = posterService.getAllPosterDetails();
+            logger.debug("All Poster Details List returned");
+            System.out.println("darshak");
+            Map<String, Object> map = new HashMap<>();
+            map.put("poster", posterList);
+            return new ResponseEntity<>(gson.toJson(map), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error in getAllPosterDetails");
             return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
