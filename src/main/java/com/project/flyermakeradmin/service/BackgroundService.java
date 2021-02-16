@@ -5,7 +5,7 @@ import com.project.flyermakeradmin.entity.BackgroundTagMapping;
 import com.project.flyermakeradmin.entity.Category;
 import com.project.flyermakeradmin.entity.Tag;
 import com.project.flyermakeradmin.repository.BackgroundRepository;
-import com.project.flyermakeradmin.response.CommonResponse;
+import com.project.flyermakeradmin.response.BackgroundResponse;
 import com.project.flyermakeradmin.response.TagResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,7 +79,7 @@ public class BackgroundService {
         if(!CollectionUtils.isEmpty(backgroundList)) {
             for (Background b: backgroundList) {
                 Optional<Category> c = categoryService.findByCatId(b.getCatId());
-                CommonResponse cr = new CommonResponse(b.getBgId(), b.getIsPurchase(), b.getImgPath(), b.getCatId(), c.get().getCatName());
+                BackgroundResponse cr = new BackgroundResponse(b.getBgId(), b.getIsPurchase(), b.getImgPath(), b.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
                 map.put("background", cr);
                 List<BackgroundTagMapping> tagList = backgroundTagMappingService.getAllByBgId(b.getBgId());

@@ -1,11 +1,10 @@
 package com.project.flyermakeradmin.service;
 
-import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.entity.Shape;
 import com.project.flyermakeradmin.entity.ShapeTagMapping;
 import com.project.flyermakeradmin.entity.Tag;
 import com.project.flyermakeradmin.repository.ShapeRepository;
-import com.project.flyermakeradmin.response.CommonResponse;
+import com.project.flyermakeradmin.response.ShapeResponse;
 import com.project.flyermakeradmin.response.TagResponse;
 import com.project.flyermakeradmin.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +78,7 @@ public class ShapeService {
         if(!CollectionUtils.isEmpty(shapeList)) {
             for (Shape s: shapeList) {
                 Optional<Category> c = categoryService.findByCatId(s.getCatId());
-                CommonResponse cr = new CommonResponse(s.getShapeId(), s.getIsPurchase(), s.getImgPath(), s.getCatId(), c.get().getCatName());
+                ShapeResponse cr = new ShapeResponse(s.getShapeId(), s.getIsPurchase(), s.getImgPath(), s.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
                 map.put("shape", cr);
                 List<ShapeTagMapping> tagList = shapeTagMappingService.getAllByShapeId(s.getShapeId());
