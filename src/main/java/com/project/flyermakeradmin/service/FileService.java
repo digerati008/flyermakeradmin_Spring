@@ -27,7 +27,15 @@ public class FileService {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmmss");
         String strDate = dateFormat.format(date);
-        String fileName = strDate + file.getOriginalFilename() ;
+        String[] parts = file.getOriginalFilename().split("-");
+        String fileName;
+        if (parts.length==2) {
+            fileName= strDate +"-"+ parts[1] ;
+        }
+        else{
+            fileName= strDate +"-"+ parts[0] ;
+        }
+
         fileName = StringUtils.cleanPath(Objects.requireNonNull(fileName));
         if (fileName.contains("..")) {
             throw new IOException("Sorry! Filename contains invalid path sequence " + fileName);
