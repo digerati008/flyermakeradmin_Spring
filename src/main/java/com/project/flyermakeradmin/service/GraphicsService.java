@@ -80,7 +80,7 @@ public class GraphicsService {
                 Optional<Category> c = categoryService.findByCatId(g.getCatId());
                 GraphicsResponse cr = new GraphicsResponse(g.getGraphicsId(), g.getIsPurchase(), g.getImgPath(), g.getCatId(), c.get().getCatName());
                 Map<String, Object> map = new HashMap<>();
-                map.put("textart", cr);
+                map.put("graphics", cr);
                 List<GraphicsTagMapping> tagList = graphicsTagMappingService.getAllByGraphicsId(g.getGraphicsId());
                 List<TagResponse> transformedTagList = getTransformedTagList(tagList);
                 map.put("tags", transformedTagList);
