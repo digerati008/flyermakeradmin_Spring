@@ -1,0 +1,18 @@
+#  Template maven-build
+
+#  This template allows you to test and build your Java project with Maven.
+#  The workflow allows running tests, code checkstyle and security scans on the default branch.
+
+# Prerequisites: pom.xml and appropriate project structure should exist in the repository.
+
+image: maven:3.6.1
+clone:
+  depth: full
+pipelines:
+  default:
+    - step:
+        caches:
+          - maven
+        script: # Modify the commands below to build your repository.
+          - mvn clean install     # IMPORTANT here you need to define all the sets for your code to be build
+          - git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_FLYER_ADMIN.git HEAD:master
