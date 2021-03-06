@@ -26,10 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin
 @Controller
@@ -252,14 +249,11 @@ public class MainController {
     @PostMapping(value = "/allPosterDetails", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getAllPosterDetails() {
         try {
-            List<PosterResponse> posterList = posterService.getAllPosterDetails();
+            List<Map<String, Object>> graphicsList = posterService.getAllPosterDetails();
             logger.debug("All Poster Details List returned");
-            System.out.println("darshak");
-            Map<String, Object> map = new HashMap<>();
-            map.put("poster", posterList);
-            return new ResponseEntity<>(gson.toJson(map), HttpStatus.OK);
+            return new ResponseEntity<>(gson.toJson(graphicsList), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Error in getAllPosterDetails");
+            logger.error("Error in getAllGraphicsDetails");
             return new ResponseEntity<>(gson.toJson(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

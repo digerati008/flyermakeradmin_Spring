@@ -1,5 +1,6 @@
 package com.project.flyermakeradmin.repository;
 
+import com.project.flyermakeradmin.entity.GraphicsTagMapping;
 import com.project.flyermakeradmin.entity.PosterTagMapping;
 import com.project.flyermakeradmin.entity.PosterTagMappingId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,7 @@ public interface PosterTagMappingRepository extends JpaRepository<PosterTagMappi
     @Modifying
     @Query(value = "delete from poster_tag_mapping as a where a.poster_id = :posterId", nativeQuery = true)
     void deleteByPosterId(@Param("posterId") Integer posterId);
+
+    @Query("select e from PosterTagMapping e where e.id.posterId = :posterId")
+    List<PosterTagMapping> findByPosterId(Integer posterId);
 }

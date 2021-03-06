@@ -1,9 +1,6 @@
 package com.project.flyermakeradmin.service;
 
-import com.project.flyermakeradmin.entity.Background;
-import com.project.flyermakeradmin.entity.BackgroundTagMapping;
-import com.project.flyermakeradmin.entity.Category;
-import com.project.flyermakeradmin.entity.Poster;
+import com.project.flyermakeradmin.entity.*;
 import com.project.flyermakeradmin.repository.PosterRepository;
 import com.project.flyermakeradmin.response.PosterIdThumbPurchase;
 import com.project.flyermakeradmin.response.PosterResponse;
@@ -27,6 +24,9 @@ public class PosterService {
 
     @Autowired
     PosterRepository posterRepository;
+
+    @Autowired
+    TagService tagService;
 
     @Autowired
     PosterTagMappingService posterTagMappingService;
@@ -59,19 +59,39 @@ public class PosterService {
         return posterRepository.save(poster);
     }
 
-    public List<PosterResponse> getAllPosterDetails() {
+    public List<Map<String, Object>> getAllPosterDetails() {
         List<Poster> posterList = posterRepository.findAll();
         List<PosterResponse> resList = new ArrayList<>();
+        List<Map<String, Object>> mapList = new ArrayList<>();
         if(!CollectionUtils.isEmpty(posterList)) {
             for (Poster b: posterList) {
                 Optional<Category> c = categoryService.findByCatId(b.getCatId());
                 PosterResponse cr = new PosterResponse(b.getPosterId(),b.getThumbImgPath(), b.getIsPurchase(), b.getBgImgPath(),b.getHeight(),b.getWidth(),b.getStatus(),b.getCatId(), c.get().getCatName());
-                resList.add(cr);
+                Map<String, Object> map = new HashMap<>();
+                map.put("posters", cr);
+                List<PosterTagMapping> tagList = posterTagMappingService.getAllByPosterId(b.getPosterId());
+                List<TagResponse> transformedTagList = getTransformedTagList(tagList);
+                map.put("tags", transformedTagList);
+                mapList.add(map);
             }
 
-            return resList;
+            return mapList;
         } else
             return new ArrayList<>();
+    }
+
+    private List<TagResponse> getTransformedTagList(List<PosterTagMapping> tagList) {
+        if (CollectionUtils.isEmpty(tagList))
+            return new ArrayList<>();
+        else {
+            List<TagResponse> transformedTagList = new ArrayList<>();
+            for(PosterTagMapping t: tagList) {
+                Tag tag = tagService.getTagById(t.getId().getTagId());
+                TagResponse tagResponse = new TagResponse(t.getId().getTagId(), tag.getTagName());
+                transformedTagList.add(tagResponse);
+            }
+            return transformedTagList;
+        }
     }
 
     public boolean checkIfPosterIdPresent(Integer posterId) {

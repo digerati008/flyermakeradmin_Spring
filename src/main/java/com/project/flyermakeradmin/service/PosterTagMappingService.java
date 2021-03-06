@@ -1,5 +1,6 @@
 package com.project.flyermakeradmin.service;
 
+import com.project.flyermakeradmin.entity.GraphicsTagMapping;
 import com.project.flyermakeradmin.entity.PosterTagMapping;
 import com.project.flyermakeradmin.entity.PosterTagMappingId;
 import com.project.flyermakeradmin.repository.PosterTagMappingRepository;
@@ -25,6 +26,10 @@ public class PosterTagMappingService {
 
     public List<Integer> getPosterIdListByTagId(Integer tagId) {
         return posterTagMappingRepository.getPosterIdListByTagId(tagId);
+    }
+
+    public List<PosterTagMapping> getAllByPosterId(Integer posterId) {
+        return posterTagMappingRepository.findByPosterId(posterId);
     }
 
     public void deleteByPosterId(Integer posterId) {
