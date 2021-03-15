@@ -142,7 +142,8 @@ public class MainController {
             Map<String, Object> res = new HashMap<>();
             List<PosterIdThumbPurchase> posterIdThumbPurchaseList = posterService.getPosterIdThumbPurchaseByCatId(catId, pageNo);
             Integer totalSize = posterService.getTotalSizeByCatId(catId);
-            res.put("size", totalSize);
+            res.put("currentPage",pageNo);
+            res.put("totalSize", totalSize/20);
             res.put("list", posterIdThumbPurchaseList);
             logger.debug("Poster Id and Thumb and isPurchase List returned for catId : {} and pageNo: {}",  catId, pageNo);
             return new ResponseEntity<>(gson.toJson(res), HttpStatus.OK);
